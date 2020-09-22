@@ -55,7 +55,7 @@ int main()
 			delete temp;
 		}
 	}
-	const auto end2 = ft.Mark() - start;
+	const auto end2 = ft.Mark() - start2;
 	std::cout << "end spiffy -- took " << end2 << "s\n";
 
 	std::cin.get();
