@@ -125,6 +125,7 @@
   <ItemGroup>
     <ClInclude Include="AnimationManager.h" />
     <ClInclude Include="FileSystemManager.h" />
+    <ClInclude Include="FrameTimer.h" />
     <ClInclude Include="MemoryManager.h" />
     <ClInclude Include="MonoBehavior.h" />
     <ClInclude Include="PhysicsManager.h" />
@@ -132,8 +133,8 @@
     <ClInclude Include="Singleton.h" />
     <ClInclude Include="SoundManager.h" />
     <ClInclude Include="TextureManager.h" />
-    <ClInclude Include="Vec2.h" />
     <ClInclude Include="Vec3.h" />
+    <ClInclude Include="Vec3Managed.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source.cpp" />

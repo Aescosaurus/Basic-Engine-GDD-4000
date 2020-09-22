@@ -48,7 +48,10 @@
     <ClInclude Include="Vec3.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Vec2.h">
+    <ClInclude Include="FrameTimer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Vec3Managed.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
