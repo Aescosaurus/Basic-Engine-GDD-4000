@@ -74,8 +74,11 @@ protected:
 	static constexpr int poolSize = 1000;
 };
 
+// Use for user-defined classes.
 template<typename T>
 class Managed
+	:
+	public T
 {
 public:
 	void* operator new( size_t size )
@@ -86,4 +89,26 @@ public:
 	{
 		MemoryManager<T>::Get().Free( ptr );
 	}
+};
+
+// Use for int/float or w/e.
+template<typename T>
+class ManagedFun
+{
+public:
+	ManagedFun( T val = T() )
+		:
+		val( val )
+	{}
+
+	void* operator new( size_t size )
+	{
+		return( MemoryManager<T>::Get().Allocate( size ) );
+	}
+	void operator delete( void* ptr )
+	{
+		MemoryManager<T>::Get().Free( ptr );
+	}
+public:
+	T val;
 };

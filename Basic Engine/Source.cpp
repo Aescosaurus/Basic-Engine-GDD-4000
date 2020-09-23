@@ -9,7 +9,6 @@
 #include <vector>
 #include "FrameTimer.h"
 #include "Vec3.h"
-#include "Vec3Managed.h"
 #include <string>
 
 template<typename T>
@@ -53,9 +52,16 @@ int main()
 
 	FrameTimer ft;
 
-	Test<Vec3>( "default",ft );
+	std::cout << "50M alloc/dealloc per trial\n";
 
-	Test<Vec3Managed_<float>>( "managed",ft );
+	Test<Vec3>( "vec3 reg",ft );
+	Test<Managed<Vec3>>( "vec3 managed",ft );
+
+	Test<double>( "double reg",ft );
+	Test<ManagedFun<double>>( "double managed",ft );
+
+	Test<std::string>( "string reg",ft );
+	Test<ManagedFun<std::string>>( "string managed",ft );
 
 	std::cin.get();
 

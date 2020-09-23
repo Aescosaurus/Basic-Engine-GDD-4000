@@ -134,7 +134,6 @@
     <ClInclude Include="SoundManager.h" />
     <ClInclude Include="TextureManager.h" />
     <ClInclude Include="Vec3.h" />
-    <ClInclude Include="Vec3Managed.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source.cpp" />
