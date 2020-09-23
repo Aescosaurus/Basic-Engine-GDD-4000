@@ -10,6 +10,27 @@
 #include "FrameTimer.h"
 #include "Vec3.h"
 #include "Vec3Managed.h"
+#include <string>
+
+template<typename T>
+void Test( const std::string& name,FrameTimer& ft )
+{
+	constexpr auto trials = 5000;
+	constexpr auto iterations = 1000;
+
+	std::cout << "start " << name << '\n';
+	const auto start = ft.Mark();
+	for( int i = 0; i < trials; ++i )
+	{
+		for( int j = 0; j < iterations; ++j )
+		{
+			T* temp = new T();
+			delete temp;
+		}
+	}
+	const auto duration = ft.Mark() - start;
+	std::cout << "end " << name << " - time taken = " << duration << "s\n";
+}
 
 int main()
 {
@@ -32,31 +53,9 @@ int main()
 
 	FrameTimer ft;
 
-	std::cout << "start default\n";
-	const auto start = ft.Mark();
-	for( int i = 0; i < 5000; ++i )
-	{
-		for( int j = 0; j < 1000; ++j )
-		{
-			auto* temp = new Vec3( 0.0f,0.0f,0.0f );
-			delete temp;
-		}
-	}
-	const auto endTime = ft.Mark() - start;
-	std::cout << "end default -- took " << endTime << "s\n";
+	Test<Vec3>( "default",ft );
 
-	std::cout << "start spiffy\n";
-	const auto start2 = ft.Mark();
-	for( int i = 0; i < 5000; ++i )
-	{
-		for( int j = 0; j < 1000; ++j )
-		{
-			auto* temp = new Vec3Managed_<float>( 0.0f,0.0f,0.0f );
-			delete temp;
-		}
-	}
-	const auto end2 = ft.Mark() - start2;
-	std::cout << "end spiffy -- took " << end2 << "s\n";
+	Test<Vec3Managed_<float>>( "managed",ft );
 
 	std::cin.get();
 

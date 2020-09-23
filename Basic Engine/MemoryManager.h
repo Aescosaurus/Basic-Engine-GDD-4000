@@ -11,10 +11,11 @@ public:
 	virtual void Free( void* ptr ) = 0;
 };
 
+template<typename T>
 class MemoryManager
 	:
 	public MonoBehavior,
-	public Singleton<MemoryManager>,
+	public Singleton<MemoryManager<T>>,
 	public IMemoryManager
 {
 protected:
@@ -71,4 +72,18 @@ public:
 protected:
 	FreeStore* head = nullptr;
 	static constexpr int poolSize = 1000;
+};
+
+template<typename T>
+class Managed
+{
+public:
+	void* operator new( size_t size )
+	{
+		return( MemoryManager<T>::Get().Allocate( size ) );
+	}
+	void operator delete( void* ptr )
+	{
+		MemoryManager<T>::Get().Free( ptr );
+	}
 };

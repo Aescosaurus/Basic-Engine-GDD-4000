@@ -4,6 +4,10 @@ template<typename T>
 class Vec3_
 {
 public:
+	Vec3_()
+		:
+		Vec3_( T( 0.0 ),T( 0.0 ),T( 0.0 ) )
+	{}
 	Vec3_( T x,T y,T z )
 		:
 		x( x ),
