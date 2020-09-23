@@ -4,11 +4,11 @@ template<typename T>
 class Vec3_
 {
 public:
-	Vec3_()
+	constexpr Vec3_()
 		:
 		Vec3_( T( 0.0 ),T( 0.0 ),T( 0.0 ) )
 	{}
-	Vec3_( T x,T y,T z )
+	constexpr Vec3_( T x,T y,T z )
 		:
 		x( x ),
 		y( y ),
@@ -16,16 +16,16 @@ public:
 	{}
 
 	template<typename U>
-	Vec3_( const Vec3_<U>& convert )
-		:
-		Vec3_( T( convert.x ),T( convert.y ),T( convert.z ) )
-	{}
+	constexpr operator Vec3_<U>()
+	{
+		return( Vec3_<U>{ U( x ),U( y ),U( z ) } );
+	}
 
 	Vec3_& operator+=( const Vec3_& rhs )
 	{
-		this->x += rhs.x;
-		this->y += rhs.y;
-		this->z += rhs.z;
+		x += rhs.x;
+		y += rhs.y;
+		z += rhs.z;
 
 		return( *this );
 	}
@@ -37,9 +37,9 @@ public:
 	}
 	Vec3_& operator-=( const Vec3_& rhs )
 	{
-		this->x -= rhs.x;
-		this->y -= rhs.y;
-		this->z -= rhs.z;
+		x -= rhs.x;
+		y -= rhs.y;
+		z -= rhs.z;
 
 		return( *this );
 	}
@@ -51,9 +51,9 @@ public:
 	}
 	Vec3_& operator*=( float rhs )
 	{
-		this->x *= rhs;
-		this->y *= rhs;
-		this->z *= rhs;
+		x *= rhs;
+		y *= rhs;
+		z *= rhs;
 
 		return( *this );
 	}
@@ -65,9 +65,9 @@ public:
 	}
 	Vec3_& operator/=( T rhs )
 	{
-		this->x /= rhs;
-		this->y /= rhs;
-		this->z /= rhs;
+		x /= rhs;
+		y /= rhs;
+		z /= rhs;
 
 		return( *this );
 	}
@@ -77,35 +77,50 @@ public:
 		temp /= rhs;
 		return( temp );
 	}
+	
+	constexpr Vec3_& Dot( const Vec3_& rhs )
+	{
+		x *= rhs.x;
+		y *= rhs.y;
+		z *= rhs.z;
 
-	Vec3_ Dot( const Vec3_& rhs ) const
+		return( *this );
+	}
+	constexpr Vec3_ GetDot( const Vec3_& rhs ) const
 	{
 		auto temp = *this;
 
-		temp.x *= rhs.x;
-		temp.y *= rhs.y;
-		temp.z *= rhs.z;
+		temp.Dot( rhs );
 
 		return( temp );
 	}
-	Vec3_ Cross( const Vec3_& rhs ) const
+	constexpr Vec3_& Cross( const Vec3_& rhs )
 	{
-		return( Vec3_{
-			this->y * rhs.z - this->z * rhs.y,
-			this->z * rhs.x - this->x * rhs.z,
-			this->x * rhs.y - this->y * rhs.x } );
+		x = y * rhs.z - z * rhs.y;
+		y = z * rhs.x - x * rhs.z;
+		z = x * rhs.y - y * rhs.x;
+
+		return( *this );
+	}
+	constexpr Vec3_ GetCross( const Vec3_& rhs ) const
+	{
+		auto temp = *this;
+
+		temp.Cross( rhs );
+
+		return( temp );
 	}
 
-	T GetLengthSq() const
+	constexpr T GetLengthSq() const
 	{
-		return( this->x * this->x + this->y * this->y + z * z );
+		return( x * x + y * y + z * z );
 	}
-	T GetLength() const
+	constexpr T GetLength() const
 	{
 		return( sqrt( GetLengthSq() ) );
 	}
 
-	Vec3_ Normalize()
+	constexpr Vec3_ Normalize()
 	{
 		const auto len = GetLength();
 		if( len == T( 0.0 ) )
@@ -114,7 +129,7 @@ public:
 		}
 		return( *this / len );
 	}
-	Vec3_ GetNormalized() const
+	constexpr Vec3_ GetNormalized() const
 	{
 		auto temp = this;
 		temp.Normalize();

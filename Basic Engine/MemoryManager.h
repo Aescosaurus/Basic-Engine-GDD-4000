@@ -1,22 +1,11 @@
 #pragma once
 
 #include "Singleton.h"
-#include "MonoBehavior.h"
-#include <algorithm>
-
-class IMemoryManager
-{
-public:
-	virtual void* Allocate( size_t size ) = 0;
-	virtual void Free( void* ptr ) = 0;
-};
 
 template<typename T>
 class MemoryManager
 	:
-	public MonoBehavior,
-	public Singleton<MemoryManager<T>>,
-	public IMemoryManager
+	public Singleton<MemoryManager<T>>
 {
 protected:
 	class FreeStore
@@ -33,7 +22,7 @@ public:
 	{
 		CleanUp();
 	}
-	void* Allocate( size_t size ) override
+	void* Allocate( size_t size )
 	{
 		if( head == nullptr ) ExpandPoolSize();
 
@@ -41,7 +30,7 @@ public:
 		head = curHead->next;
 		return( curHead );
 	}
-	void Free( void* ptr ) override
+	void Free( void* ptr )
 	{
 		auto* curHead = ( FreeStore* )( ptr );
 
