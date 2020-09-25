@@ -127,6 +127,7 @@
     <ClInclude Include="FileSystemManager.h" />
     <ClInclude Include="FrameTimer.h" />
     <ClInclude Include="MemoryManager.h" />
+    <ClInclude Include="MemoryManagerTS.h" />
     <ClInclude Include="MonoBehavior.h" />
     <ClInclude Include="PhysicsManager.h" />
     <ClInclude Include="RenderManager.h" />

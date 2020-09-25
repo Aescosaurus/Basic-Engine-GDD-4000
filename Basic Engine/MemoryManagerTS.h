@@ -1,11 +1,14 @@
 #pragma once
 
-#include "Singleton.h"
+#include "MemoryManager.h"
+#include <mutex>
+#include <shared_mutex>
+#include <exception>
 
 template<typename T>
-class MemoryManager
+class MemoryManagerTS
 	:
-	public Singleton<MemoryManager<T>>
+	public Singleton<MemoryManagerTS<T>>
 {
 protected:
 	class FreeStore
@@ -14,11 +17,11 @@ protected:
 		FreeStore* next = nullptr;
 	};
 public:
-	MemoryManager()
+	MemoryManagerTS()
 	{
 		ExpandPoolSize();
 	}
-	~MemoryManager()
+	~MemoryManagerTS()
 	{
 		CleanUp();
 	}
@@ -26,12 +29,14 @@ public:
 	{
 		if( head == nullptr ) ExpandPoolSize();
 
+		std::lock_guard<std::mutex> guard{ mtx };
 		auto* curHead = head;
 		head = curHead->next;
 		return( curHead );
 	}
 	void Free( void* ptr )
 	{
+		std::lock_guard<std::mutex> guard{ mtx };
 		auto* curHead = ( FreeStore* )( ptr );
 
 		curHead->next = head;
@@ -39,6 +44,7 @@ public:
 	}
 	void ExpandPoolSize()
 	{
+		std::lock_guard<std::mutex> guard{ mtx };
 		const auto size = sizeof( FreeStore* );
 		auto* curHead = ( FreeStore* )( new char[size] );
 		head = curHead;
@@ -51,6 +57,7 @@ public:
 	}
 	void CleanUp()
 	{
+		std::lock_guard<std::mutex> guard{ mtx };
 		auto* cur = head;
 		while( cur != nullptr )
 		{
@@ -61,43 +68,36 @@ public:
 private:
 	FreeStore* head = nullptr;
 	static constexpr int poolSize = 1000;
+private:
+	std::mutex mtx;
+	// std::shared_lock<std::shared_mutex> lock;
 };
 
-// Use for user-defined classes.
 template<typename T>
-class Managed
-	:
-	public T
+class ManagedTS
 {
 public:
 	void* operator new( size_t size )
 	{
-		return( MemoryManager<T>::Get().Allocate( size ) );
+		// todo spiffy template for get call
+		return( MemoryManagerTS<T>::Get().Allocate( size ) );
 	}
 	void operator delete( void* ptr )
 	{
-		MemoryManager<T>::Get().Free( ptr );
+		MemoryManagerTS<T>::Get().Free( ptr );
 	}
 };
 
-// Use for int/float or w/e.
 template<typename T>
-class ManagedFun
+class ManagedFunTS
 {
 public:
-	ManagedFun( T val = T() )
-		:
-		val( val )
-	{}
-
 	void* operator new( size_t size )
 	{
-		return( MemoryManager<T>::Get().Allocate( size ) );
+		return( MemoryManagerTS<T>::Get().Allocate( size ) );
 	}
 	void operator delete( void* ptr )
 	{
-		MemoryManager<T>::Get().Free( ptr );
+		MemoryManagerTS<T>::Get().Free( ptr );
 	}
-public:
-	T val;
 };
