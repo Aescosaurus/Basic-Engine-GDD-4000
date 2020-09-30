@@ -24,11 +24,9 @@ void Test( const std::string& name,FrameTimer& ft )
 	const auto start = ft.Mark();
 	for( int i = 0; i < trials; ++i )
 	{
-		for( int j = 0; j < iterations; ++j )
-		{
-			T* temp = new T();
-			delete temp;
-		}
+		T* temps[iterations];
+		for( int j = 0; j < iterations; ++j ) temps[j] = new T();
+		for( int j = 0; j < iterations; ++j ) delete temps[j];
 	}
 	const auto duration = ft.Mark() - start;
 	std::cout << "end " << name << " - time taken = " << duration << "s\n";
@@ -38,15 +36,13 @@ template<typename T>
 void TestThread( const std::string& name,FrameTimer& ft )
 {
 	constexpr auto trials = 5000;
-	constexpr auto iterations = 1000;
 
-	const auto new_del_test = [&]()
+	const auto new_del_test = []()
 	{
-		for( int j = 0; j < iterations; ++j )
-		{
-			T* temp = new T();
-			delete temp;
-		}
+		constexpr auto iterations = 1000;
+		T* temps[iterations];
+		for( int j = 0; j < iterations; ++j ) temps[j] = new T();
+		for( int j = 0; j < iterations; ++j ) delete temps[j];
 	};
 
 	std::vector<std::thread> threads;
