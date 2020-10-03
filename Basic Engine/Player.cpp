@@ -16,9 +16,22 @@ void Player::Update( const Keyboard& kbd,float dt )
 	{
 		pos = newPos;
 	}
+
+	if( refire.Update( dt ) && kbd.KeyIsPressed( ' ' ) &&
+		bullets.size() < 2 )
+	{
+		bullets.emplace_back( Bullet{ pos } );
+	}
+
+	for( auto& b : bullets )
+	{
+		b.Update( dt );
+	}
 }
 
 void Player::Draw( Graphics& gfx ) const
 {
 	gfx.PutPixel( int( pos.x ),int( pos.y ),'^' );
+
+	for( const auto& b : bullets ) b.Draw( gfx );
 }
