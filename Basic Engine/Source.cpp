@@ -6,9 +6,9 @@
 #include <string>
 #include <thread>
 #include "MemoryManagerTS.h"
-#include <exception>
 #include "Keyboard.h"
 #include "Graphics.h"
+#include "Game.h"
 
 template<typename T>
 void Test( const std::string& name,FrameTimer& ft )
@@ -89,11 +89,6 @@ int main()
 {
 	// std::vector<MonoBehavior*> managers;
 	// managers.emplace_back( FileSystemManager::Ptr() );
-	// managers.emplace_back( TextureManager::Ptr() );
-	// managers.emplace_back( RenderManager::Ptr() );
-	// managers.emplace_back( AnimationManager::Ptr() );
-	// managers.emplace_back( PhysicsManager::Ptr() );
-	// managers.emplace_back( SoundManager::Ptr() );
 
 	// for( auto& man : managers ) man->Start();
 	// std::cout << '\n';
@@ -108,6 +103,7 @@ int main()
 
 	Keyboard kbd;
 	Graphics gfx;
+	Game theGame{ kbd,gfx };
 
 	FrameTimer ft;
 	// constexpr float framerate = 60.0f;
@@ -123,11 +119,10 @@ int main()
 
 			auto gfxThread = std::thread{ &Graphics::Present,&gfx };
 
-			// game.update
-			if( kbd.KeyIsPressed( 'A' ) ) gfx.PutPixel( 5,5,'A' );
+			theGame.Update();
+			theGame.Draw();
 
 			gfxThread.join();
-			// gfx.Present();
 			
 			frameCounter -= frameDelta;
 		}

@@ -16,7 +16,7 @@ private:
 
 	std::vector<char>* FlipBuffer();
 public:
-	static constexpr int ScreenWidth = 37 + 1;
+	static constexpr int ScreenWidth = 37;
 	static constexpr int ScreenHeight = 12;
 	std::vector<char> pixels;
 	std::vector<char> pixels2;

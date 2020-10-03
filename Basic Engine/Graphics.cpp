@@ -7,8 +7,11 @@
 
 Graphics::Graphics()
 {
-	pixels.resize( ScreenWidth * ScreenHeight );
-	pixels2.resize( ScreenWidth * ScreenHeight );
+	pixels.resize( ( ScreenWidth + 1 ) * ScreenHeight );
+	pixels2.resize( ( ScreenWidth + 1 ) * ScreenHeight );
+
+	BeginFrame();
+	BeginFrame();
 
 	HideCursor();
 }
@@ -22,11 +25,11 @@ void Graphics::BeginFrame()
 	// memset( pixels.data(),' ',pixels.size() );
 	for( int y = 0; y < ScreenHeight; ++y )
 	{
-		for( int x = 0; x < ScreenWidth - 1; ++x )
+		for( int x = 0; x < ScreenWidth + 1; ++x )
 		{
 			PutPixel( x,y,fillChar );
 		}
-		PutPixel( ScreenWidth - 1,y,'\n' );
+		PutPixel( ScreenWidth,y,'\n' );
 	}
 }
 
@@ -40,11 +43,11 @@ void Graphics::Present()
 void Graphics::PutPixel( int x,int y,char c )
 {
 	assert( x >= 0 );
-	assert( x < ScreenWidth );
+	assert( x <= ScreenWidth ); // Danger!
 	assert( y >= 0 );
 	assert( y < ScreenHeight );
 
-	( *pPixelBuffer )[y * ( ScreenWidth - 1 ) + x] = c;
+	( *pPixelBuffer )[y * ( ScreenWidth + 1 ) + x] = c;
 }
 
 void Graphics::HideCursor()
