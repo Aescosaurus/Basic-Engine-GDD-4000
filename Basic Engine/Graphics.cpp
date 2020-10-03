@@ -8,6 +8,7 @@
 Graphics::Graphics()
 {
 	pixels.resize( ScreenWidth * ScreenHeight );
+	pixels2.resize( ScreenWidth * ScreenHeight );
 
 	HideCursor();
 }
@@ -15,12 +16,15 @@ Graphics::Graphics()
 void Graphics::BeginFrame()
 {
 	system( "cls" );
+
+	pPixelBuffer = FlipBuffer();
+
 	// memset( pixels.data(),' ',pixels.size() );
 	for( int y = 0; y < ScreenHeight; ++y )
 	{
-		for( int x = 0; x < ScreenWidth; ++x )
+		for( int x = 0; x < ScreenWidth - 1; ++x )
 		{
-			PutPixel( x,y,'.' );
+			PutPixel( x,y,fillChar );
 		}
 		PutPixel( ScreenWidth - 1,y,'\n' );
 	}
@@ -28,7 +32,9 @@ void Graphics::BeginFrame()
 
 void Graphics::Present()
 {
-	std::copy( pixels.begin(),pixels.end(),std::ostream_iterator<char>( std::cout,"" ) );
+	const auto* oldBuffer = FlipBuffer();
+
+	std::copy( oldBuffer->begin(),oldBuffer->end(),std::ostream_iterator<char>( std::cout,"" ) );
 }
 
 void Graphics::PutPixel( int x,int y,char c )
@@ -38,7 +44,7 @@ void Graphics::PutPixel( int x,int y,char c )
 	assert( y >= 0 );
 	assert( y < ScreenHeight );
 
-	pixels[y * ScreenWidth + x] = c;
+	( *pPixelBuffer )[y * ( ScreenWidth - 1 ) + x] = c;
 }
 
 void Graphics::HideCursor()
@@ -48,4 +54,9 @@ void Graphics::HideCursor()
 	GetConsoleCursorInfo( out,&cursorInfo );
 	cursorInfo.bVisible = false;
 	SetConsoleCursorInfo( out,&cursorInfo );
+}
+
+std::vector<char>* Graphics::FlipBuffer()
+{
+	return( ( pPixelBuffer == &pixels ) ? &pixels2 : &pixels );
 }

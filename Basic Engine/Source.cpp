@@ -127,10 +127,13 @@ int main()
 		{
 			gfx.BeginFrame();
 
+			auto gfxThread = std::thread{ &Graphics::Present,&gfx };
+
 			// game.update
 			if( kbd.KeyIsPressed( 'A' ) ) gfx.PutPixel( 5,5,'A' );
 
-			gfx.Present();
+			gfxThread.join();
+			// gfx.Present();
 			
 			frameCounter -= frameDelta;
 		}
