@@ -15,9 +15,12 @@ public:
 
 	void FlipDir();
 	void DropDown();
+	void Reset();
 
 	const Vec2& GetPos() const;
 	bool Ouch() const;
+public:
+	static constexpr float radius = 1.0f;
 private:
 	static constexpr float speedIncrease = 1.0f;
 	float speed = 1.0f;

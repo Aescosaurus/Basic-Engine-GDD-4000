@@ -15,8 +15,6 @@ public:
 
 	bool Ouch() const;
 	const Vec2& GetPos() const;
-public:
-	static constexpr float radius = 1.0f;
 private:
 	static constexpr float speed = 6.0f;
 	Vec2 pos;

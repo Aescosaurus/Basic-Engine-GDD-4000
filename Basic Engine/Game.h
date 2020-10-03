@@ -25,4 +25,5 @@ private:
 	std::vector<Bullet> bullets;
 	std::vector<Alien> aliens;
 	static constexpr int nAliens = 8;
+	bool gameOver = false;
 };

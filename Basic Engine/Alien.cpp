@@ -38,6 +38,11 @@ void Alien::DropDown()
 	// vel.x = aesc::sign( vel.x ) * ( abs( vel.x ) + speedIncrease );
 }
 
+void Alien::Reset()
+{
+	vel = Vec2::Zero();
+}
+
 const Vec2& Alien::GetPos() const
 {
 	return( pos );

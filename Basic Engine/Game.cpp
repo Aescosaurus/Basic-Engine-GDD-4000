@@ -23,13 +23,24 @@ void Game::Update()
 	player.Update( kbd,dt );
 
 	for( auto& b : bullets ) b.Update( world,dt );
+
+	// Alien update and interactions.
 	for( auto& alien : aliens )
 	{
 		alien.Update( dt );
 
+		// if( ( player.GetPos() - alien.GetPos() ).GetLengthSq() < Alien::radius * Alien::radius )
+		if( aesc::check_coll( player.GetPos(),alien.GetPos(),Alien::radius ) )
+		{
+			gameOver = true;
+			player.ApplyOuch();
+			for( auto& a : aliens ) a.Reset();
+		}
+
 		for( auto& b : bullets )
 		{
-			if( ( b.GetPos() - alien.GetPos() ).GetLengthSq() < Bullet::radius )
+			// if( ( b.GetPos() - alien.GetPos() ).GetLengthSq() < Alien::radius * Alien::radius )
+			if( aesc::check_coll( b.GetPos(),alien.GetPos(),Alien::radius ) )
 			{
 				b.ApplyOuch();
 				alien.ApplyOuch();
@@ -37,7 +48,8 @@ void Game::Update()
 		}
 	}
 
-	if( aliens.size() > 0 )
+	// Swoop interaction.
+	if( aliens.size() > 0 && !gameOver )
 	{
 		if( aliens.back().GetPos().x >= float( GameWorld::width - 2 ) )
 		{
@@ -57,9 +69,9 @@ void Game::Draw()
 {
 	world.Draw( gfx );
 
-	player.Draw( gfx );
+	for( const auto& a : aliens ) a.Draw( gfx );
 
 	for( const auto& b : bullets ) b.Draw( gfx );
 
-	for( const auto& a : aliens ) a.Draw( gfx );
+	player.Draw( gfx );
 }

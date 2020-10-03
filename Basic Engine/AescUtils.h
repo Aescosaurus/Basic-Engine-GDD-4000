@@ -17,4 +17,10 @@ namespace aesc
 	{
 		return( val / abs( val ) );
 	}
+
+	template<typename T>
+	bool check_coll( const T& a,const T& b,float rad )
+	{
+		return( ( a - b ).GetLengthSq() < rad * rad );
+	}
 }
