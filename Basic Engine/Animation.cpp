@@ -24,3 +24,8 @@ void Animation::Update( float dt )
 		curFrame = 0;
 	}
 }
+
+void Animation::Draw( const Vei2& pos,Graphics& gfx ) const
+{
+	gfx.PutPixel( pos.x,pos.y,frames[curFrame] );
+}

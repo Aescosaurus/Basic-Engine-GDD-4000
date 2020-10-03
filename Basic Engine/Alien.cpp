@@ -9,11 +9,19 @@ Alien::Alien( const Vec2& pos )
 void Alien::Update( float dt )
 {
 	pos += vel * dt;
+
+	anim.Update( dt );
 }
 
 void Alien::Draw( Graphics& gfx ) const
 {
-	gfx.PutPixel( int( pos.x ),int( pos.y ),'M' );
+	// gfx.PutPixel( int( pos.x ),int( pos.y ),'M' );
+	anim.Draw( Vei2( pos ),gfx );
+}
+
+void Alien::ApplyOuch()
+{
+	ouch = true;
 }
 
 void Alien::FlipDir()
@@ -33,4 +41,9 @@ void Alien::DropDown()
 const Vec2& Alien::GetPos() const
 {
 	return( pos );
+}
+
+bool Alien::Ouch() const
+{
+	return( ouch );
 }

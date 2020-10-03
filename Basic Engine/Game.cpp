@@ -26,6 +26,15 @@ void Game::Update()
 	for( auto& alien : aliens )
 	{
 		alien.Update( dt );
+
+		for( auto& b : bullets )
+		{
+			if( ( b.GetPos() - alien.GetPos() ).GetLengthSq() < Bullet::radius )
+			{
+				b.ApplyOuch();
+				alien.ApplyOuch();
+			}
+		}
 	}
 
 	if( aliens.size() > 0 )
@@ -41,6 +50,7 @@ void Game::Update()
 	}
 
 	aesc::remove_erase_if( bullets,std::mem_fn( &Bullet::Ouch ) );
+	aesc::remove_erase_if( aliens,std::mem_fn( &Alien::Ouch ) );
 }
 
 void Game::Draw()

@@ -21,7 +21,17 @@ void Bullet::Draw( Graphics& gfx ) const
 	gfx.PutPixel( int( pos.x ),int( pos.y ),'*' );
 }
 
+void Bullet::ApplyOuch()
+{
+	ouch = true;
+}
+
 bool Bullet::Ouch() const
 {
 	return( ouch );
+}
+
+const Vec2& Bullet::GetPos() const
+{
+	return( pos );
 }
