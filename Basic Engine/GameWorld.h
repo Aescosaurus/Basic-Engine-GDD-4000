@@ -19,6 +19,8 @@ public:
 
 	void Draw( Graphics& gfx ) const;
 
+	TileType GetTile( int x,int y ) const;
+
 	void Start() override;
 	void Update() override;
 	void Shutdown() override;

@@ -28,6 +28,11 @@ void GameWorld::Draw( Graphics& gfx ) const
 	}
 }
 
+GameWorld::TileType GameWorld::GetTile( int x,int y ) const
+{
+	return( tiles[y * width + x] );
+}
+
 void GameWorld::Start()
 {
 	std::cout << "Starting up!\n";

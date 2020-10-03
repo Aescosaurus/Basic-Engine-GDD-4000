@@ -3,6 +3,8 @@
 #include "Keyboard.h"
 #include "Graphics.h"
 #include "GameWorld.h"
+#include "FrameTimer.h"
+#include "Player.h"
 
 class Game
 {
@@ -15,5 +17,7 @@ private:
 	Keyboard& kbd;
 	Graphics& gfx;
 
+	FrameTimer ft;
 	GameWorld world;
+	Player player;
 };

@@ -131,7 +131,9 @@
     <ClInclude Include="MemoryManager.h" />
     <ClInclude Include="MemoryManagerTS.h" />
     <ClInclude Include="MonoBehavior.h" />
+    <ClInclude Include="Player.h" />
     <ClInclude Include="Singleton.h" />
+    <ClInclude Include="Vec2.h" />
     <ClInclude Include="Vec3.h" />
   </ItemGroup>
   <ItemGroup>
@@ -139,6 +141,7 @@
     <ClCompile Include="GameWorld.cpp" />
     <ClCompile Include="Graphics.cpp" />
     <ClCompile Include="Keyboard.cpp" />
+    <ClCompile Include="Player.cpp" />
     <ClCompile Include="Source.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
