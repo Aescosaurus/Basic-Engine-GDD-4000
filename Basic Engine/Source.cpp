@@ -1,11 +1,5 @@
 #include <iostream>
 #include "MemoryManager.h"
-#include "AnimationManager.h"
-#include "FileSystemManager.h"
-#include "PhysicsManager.h"
-#include "RenderManager.h"
-#include "SoundManager.h"
-#include "TextureManager.h"
 #include <vector>
 #include "FrameTimer.h"
 #include "Vec3.h"
