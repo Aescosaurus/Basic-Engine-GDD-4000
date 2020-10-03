@@ -5,6 +5,7 @@
 #include "GameWorld.h"
 #include "FrameTimer.h"
 #include "Player.h"
+#include "Bullet.h"
 
 class Game
 {
@@ -20,4 +21,5 @@ private:
 	FrameTimer ft;
 	GameWorld world;
 	Player player;
+	std::vector<Bullet> bullets;
 };

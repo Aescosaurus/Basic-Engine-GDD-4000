@@ -5,14 +5,23 @@ Bullet::Bullet( const Vec2& pos )
 	pos( pos )
 {}
 
-void Bullet::Update( float dt )
+void Bullet::Update( const GameWorld& world,float dt )
 {
 	pos += vel * dt;
 
 	// todo destroy on wall or enemy
+	if( world.GetTile( int( pos.x ),int( pos.y ) ) == GameWorld::TileType::Wall )
+	{
+		ouch = true;
+	}
 }
 
 void Bullet::Draw( Graphics& gfx ) const
 {
 	gfx.PutPixel( int( pos.x ),int( pos.y ),'*' );
+}
+
+bool Bullet::Ouch() const
+{
+	return( ouch );
 }

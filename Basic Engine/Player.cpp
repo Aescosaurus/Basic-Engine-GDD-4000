@@ -1,8 +1,9 @@
 #include "Player.h"
 
-Player::Player( const GameWorld& world )
+Player::Player( const GameWorld& world,std::vector<Bullet>& bullets )
 	:
-	world( world )
+	world( world ),
+	bullets( bullets )
 {}
 
 void Player::Update( const Keyboard& kbd,float dt )
@@ -20,18 +21,11 @@ void Player::Update( const Keyboard& kbd,float dt )
 	if( refire.Update( dt ) && kbd.KeyIsPressed( ' ' ) &&
 		bullets.size() < 2 )
 	{
-		bullets.emplace_back( Bullet{ pos } );
-	}
-
-	for( auto& b : bullets )
-	{
-		b.Update( dt );
+		bullets.emplace_back( Bullet{ pos + Vec2::Up() } );
 	}
 }
 
 void Player::Draw( Graphics& gfx ) const
 {
 	gfx.PutPixel( int( pos.x ),int( pos.y ),'^' );
-
-	for( const auto& b : bullets ) b.Draw( gfx );
 }

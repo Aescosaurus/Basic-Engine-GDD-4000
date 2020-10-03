@@ -123,6 +123,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="AescUtils.h" />
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="FrameTimer.h" />
     <ClInclude Include="Game.h" />
