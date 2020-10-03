@@ -24,6 +24,8 @@ void Player::Update( const Keyboard& kbd,float dt )
 	if( refire.Update( dt ) && kbd.KeyIsPressed( ' ' ) &&
 		bullets.size() < 2 && !ouch )
 	{
+		refire.Reset();
+
 		bullets.emplace_back( Bullet{ pos + Vec2::Up() } );
 	}
 

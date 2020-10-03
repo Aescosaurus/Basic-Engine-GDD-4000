@@ -107,7 +107,7 @@ int main()
 
 	FrameTimer ft;
 	// constexpr float framerate = 60.0f;
-	constexpr float framerate = 4.0f;
+	constexpr float framerate = 24.0f;
 	constexpr float frameDelta = 1.0f / framerate;
 	float frameCounter = 0.0f;
 	while( true )
