@@ -6,6 +6,7 @@
 #include "FrameTimer.h"
 #include "Player.h"
 #include "Bullet.h"
+#include "Alien.h"
 
 class Game
 {
@@ -22,4 +23,6 @@ private:
 	GameWorld world;
 	Player player;
 	std::vector<Bullet> bullets;
+	std::vector<Alien> aliens;
+	static constexpr int nAliens = 8;
 };

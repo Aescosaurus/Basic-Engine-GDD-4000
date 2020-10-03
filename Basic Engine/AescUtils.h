@@ -11,4 +11,10 @@ namespace aesc
 		const auto new_end = std::remove_if( container.begin(),container.end(),pred );
 		container.erase( new_end,container.end() );
 	}
+
+	template<typename T>
+	T sign( T val )
+	{
+		return( val / abs( val ) );
+	}
 }

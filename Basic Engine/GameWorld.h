@@ -24,8 +24,9 @@ public:
 	void Start() override;
 	void Update() override;
 	void Shutdown() override;
-private:
+public:
 	static constexpr int width = Graphics::ScreenWidth;
 	static constexpr int height = Graphics::ScreenHeight;
+private:
 	std::vector<TileType> tiles;
 };
