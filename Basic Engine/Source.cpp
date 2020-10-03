@@ -13,6 +13,8 @@
 #include <thread>
 #include "MemoryManagerTS.h"
 #include <exception>
+#include "Keyboard.h"
+#include "Graphics.h"
 
 template<typename T>
 void Test( const std::string& name,FrameTimer& ft )
@@ -69,6 +71,26 @@ void TestThread( const std::string& name,FrameTimer& ft )
 	std::cout << "end " << name << " - time taken = " << duration << "s\n";
 }
 
+void RunTests()
+{
+	FrameTimer ft;
+
+	std::cout << "50M alloc/dealloc per trial (5K trials 1K allocs each)\n";
+
+	Test<Vec3>( "vec3 reg",ft );
+	Test<Managed<Vec3>>( "vec3 managed",ft );
+
+	Test<double>( "double reg",ft );
+	Test<ManagedFun<double>>( "double managed",ft );
+
+	Test<std::string>( "string reg",ft );
+	Test<ManagedFun<std::string>>( "string managed",ft );
+
+	TestThread<Vec3>( "vec3 thread",ft );
+	// TestThread<Managed<Vec3>>( "vec3 managed thread unsafe",ft );
+	TestThread<ManagedTS<Vec3>>( "vec3 managed thread safe",ft );
+}
+
 int main()
 {
 	// std::vector<MonoBehavior*> managers;
@@ -88,22 +110,31 @@ int main()
 	// 	( *it )->Shutdown();
 	// }
 
+	// RunTests();
+
+	Keyboard kbd;
+	Graphics gfx;
+
 	FrameTimer ft;
+	// constexpr float framerate = 60.0f;
+	constexpr float framerate = 4.0f;
+	constexpr float frameDelta = 1.0f / framerate;
+	float frameCounter = 0.0f;
+	while( true )
+	{
+		frameCounter += ft.Mark();
+		if( frameCounter >= frameDelta )
+		{
+			gfx.BeginFrame();
 
-	std::cout << "50M alloc/dealloc per trial (5K trials 1K allocs each)\n";
+			// game.update
+			if( kbd.KeyIsPressed( 'A' ) ) gfx.PutPixel( 5,5,'A' );
 
-	Test<Vec3>( "vec3 reg",ft );
-	Test<Managed<Vec3>>( "vec3 managed",ft );
-	
-	Test<double>( "double reg",ft );
-	Test<ManagedFun<double>>( "double managed",ft );
-	
-	Test<std::string>( "string reg",ft );
-	Test<ManagedFun<std::string>>( "string managed",ft );
-
-	TestThread<Vec3>( "vec3 thread",ft );
-	// TestThread<Managed<Vec3>>( "vec3 managed thread unsafe",ft );
-	TestThread<ManagedTS<Vec3>>( "vec3 managed thread safe",ft );
+			gfx.Present();
+			
+			frameCounter -= frameDelta;
+		}
+	}
 
 	std::cin.get();
 

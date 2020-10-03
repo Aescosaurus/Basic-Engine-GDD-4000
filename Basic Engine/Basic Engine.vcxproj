@@ -126,6 +126,8 @@
     <ClInclude Include="AnimationManager.h" />
     <ClInclude Include="FileSystemManager.h" />
     <ClInclude Include="FrameTimer.h" />
+    <ClInclude Include="Graphics.h" />
+    <ClInclude Include="Keyboard.h" />
     <ClInclude Include="MemoryManager.h" />
     <ClInclude Include="MemoryManagerTS.h" />
     <ClInclude Include="MonoBehavior.h" />
@@ -137,6 +139,8 @@
     <ClInclude Include="Vec3.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Graphics.cpp" />
+    <ClCompile Include="Keyboard.cpp" />
     <ClCompile Include="Source.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
