@@ -6,6 +6,7 @@
 #include "GameWorld.h"
 #include "Vec2.h"
 #include <vector>
+#include "Timer.h"
 
 class Game
 {
@@ -26,4 +27,11 @@ private:
 
 	Vec2 playerPos;
 	std::vector<Vec2> bullets;
+	std::vector<Vec2> aliens;
+	Timer alienAnim = 0.5f;
+	char alienFrame = 'M';
+	int alienDir = 1;
+	int alienSpeed = 1;
+	Timer alienMove = 1.0f;
+	bool gameOver = false;
 };
