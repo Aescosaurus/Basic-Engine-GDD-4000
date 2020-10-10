@@ -11,9 +11,6 @@ Graphics::Graphics()
 	pixels2.resize( ( ScreenWidth + 1 ) * ScreenHeight );
 
 	BeginFrame();
-	BeginFrame();
-
-	HideCursor();
 }
 
 void Graphics::BeginFrame()
@@ -48,15 +45,6 @@ void Graphics::PutPixel( int x,int y,char c )
 	assert( y < ScreenHeight );
 
 	( *pPixelBuffer )[y * ( ScreenWidth + 1 ) + x] = c;
-}
-
-void Graphics::HideCursor()
-{
-	HANDLE out = GetStdHandle( STD_OUTPUT_HANDLE );
-	CONSOLE_CURSOR_INFO cursorInfo;
-	GetConsoleCursorInfo( out,&cursorInfo );
-	cursorInfo.bVisible = false;
-	SetConsoleCursorInfo( out,&cursorInfo );
 }
 
 std::vector<char>* Graphics::FlipBuffer()
