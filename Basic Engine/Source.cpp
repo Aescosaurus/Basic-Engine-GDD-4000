@@ -11,35 +11,32 @@ int main()
 	Keyboard kbd;
 	Graphics gfx;
 	Game theGame{ kbd,gfx };
-	bool exit = false;
 
-	auto present = [&]()
-	{
-		while( !exit ) gfx.Present();
-	};
-
-	std::thread gfxThread{ present };
-
-	FrameTimer ft;
 	// constexpr float framerate = 60.0f;
 	constexpr float framerate = 24.0f;
 	constexpr float frameDiv = 1.0f / framerate;
-	float frameCounter = 0.0f;
-	while( !exit )
+
+	FrameTimer ft;
+	float prev = ft.Mark();
+	float lag = 0.0f;
+	while( true )
 	{
-		frameCounter += ft.Mark();
-		if( frameCounter >= frameDiv )
+		const float current = ft.Mark();
+		const float elapsed = current - prev;
+		prev = current;
+		lag += elapsed;
+
+		while( lag >= frameDiv )
 		{
-			gfx.BeginFrame();
-
 			theGame.Update();
-			theGame.Draw();
-			
-			frameCounter -= frameDiv;
+			lag -= frameDiv;
 		}
-	}
 
-	gfxThread.join();
+		gfx.BeginFrame();
+		theGame.Draw();
+
+		gfx.Present();
+	}
 
 	std::cin.get();
 

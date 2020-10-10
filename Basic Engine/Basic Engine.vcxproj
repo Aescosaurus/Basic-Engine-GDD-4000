@@ -136,14 +136,9 @@
     <ClInclude Include="Vec3.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Alien.cpp" />
-    <ClCompile Include="Animation.cpp" />
-    <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="Game.cpp" />
-    <ClCompile Include="GameWorld.cpp" />
     <ClCompile Include="Graphics.cpp" />
     <ClCompile Include="Keyboard.cpp" />
-    <ClCompile Include="Player.cpp" />
     <ClCompile Include="Source.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
