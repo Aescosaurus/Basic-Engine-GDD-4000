@@ -13,7 +13,7 @@ int main()
 	Game theGame{ kbd,gfx };
 
 	// constexpr float framerate = 60.0f;
-	constexpr float framerate = 24.0f;
+	constexpr float framerate = 4.0f;
 	constexpr float frameDiv = 1.0f / framerate;
 
 	FrameTimer ft;
@@ -26,11 +26,12 @@ int main()
 		prev = current;
 		lag += elapsed;
 
-		while( lag >= frameDiv )
-		{
-			theGame.Update();
-			lag -= frameDiv;
-		}
+		// while( lag >= frameDiv )
+		// {
+		// 	theGame.Update();
+		// 	lag -= frameDiv;
+		// }
+		theGame.Update();
 
 		gfx.BeginFrame();
 		theGame.Draw();

@@ -1,7 +1,16 @@
 #pragma once
 
+#include <thread>
+
 class Keyboard
 {
 public:
-	bool KeyIsPressed( char key ) const;
+	Keyboard();
+	~Keyboard();
+
+	char CheckKey() const;
+private:
+	bool stop = false;
+	std::thread inputThread;
+	char key = '\0';
 };

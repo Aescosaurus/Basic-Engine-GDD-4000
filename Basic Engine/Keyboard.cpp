@@ -1,8 +1,26 @@
 #include "Keyboard.h"
-#include <Windows.h>
-#include <WinUser.h>
+#include <conio.h>
 
-bool Keyboard::KeyIsPressed( char key ) const
+Keyboard::Keyboard()
 {
-	return( GetAsyncKeyState( key ) != 0 );
+	auto check_input = [&]()
+	{
+		while( !stop )
+		{
+			key = _getch();
+		}
+	};
+
+	inputThread = std::thread{ check_input };
+}
+
+Keyboard::~Keyboard()
+{
+	stop = true;
+	inputThread.join();
+}
+
+char Keyboard::CheckKey() const
+{
+	return( key );
 }
