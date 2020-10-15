@@ -25,16 +25,25 @@ AescEngine::~AescEngine()
 	gfxThread.join();
 }
 
+void AescEngine::Quit()
+{
+	running = false;
+}
+
+bool AescEngine::Running() const
+{
+	return( running );
+}
+
 void AescEngine::GameUpdate()
 {
-	// gfx.BeginFrame();
+	static FrameTimer ft;
 
+	const auto dt = ft.Mark();
 	for( auto& obj : objs )
 	{
-		obj->Update();
+		obj->Update( kbd,dt );
 	}
-
-	// gfx.FlipBuffer();
 }
 
 void AescEngine::GfxDraw()
@@ -43,7 +52,7 @@ void AescEngine::GfxDraw()
 
 	for( const auto& obj : objs )
 	{
-		obj->Draw();
+		obj->Draw( gfx );
 	}
 
 	gfx.Present();

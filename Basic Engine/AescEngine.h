@@ -16,19 +16,23 @@ public:
 
 	// T must inherit from GameObject.
 	template<typename T>
-	static T& CreateObj( bool callInit = true )
+	static GameObject& CreateObj( bool callInit = true )
 	{
 		objs.emplace_back( std::make_unique<T>() );
 		if( callInit ) objs.back()->Init();
-		return( *( objs.back() ) );
+		return( *( objs.back().get() ) );
 	}
 	// TODO: Object destroy.
+	void Quit();
+
+	bool Running() const;
 private:
 	void GameUpdate();
 	void GfxDraw();
 	template<typename T>
 	void ThreadFunc( T func )
 	{
+		FrameTimer ft;
 		constexpr float frameDiv = 1.0f / framerate;
 
 		float prev = ft.Mark();
@@ -62,7 +66,6 @@ private:
 private:
 	Keyboard kbd;
 	Graphics gfx;
-	FrameTimer ft;
 	
 	std::thread gameThread;
 	std::thread gfxThread;

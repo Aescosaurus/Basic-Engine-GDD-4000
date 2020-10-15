@@ -23,5 +23,5 @@ private:
 	std::vector<char> pixels;
 	std::vector<char> pixels2;
 	std::vector<char>* pPixelBuffer = &pixels;
-	static constexpr char fillChar = '.';
+	static constexpr char fillChar = ' ';
 };
