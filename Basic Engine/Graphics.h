@@ -7,12 +7,15 @@ class Graphics
 public:
 	Graphics();
 
-	void BeginFrame();
+	void ClearPixels();
+	void ClearScreen();
 	void Present();
 
 	void PutPixel( int x,int y,char c );
+
+	void FlipBuffer();
 private:
-	std::vector<char>* FlipBuffer();
+	// std::vector<char>* FlipBuffer();
 public:
 	static constexpr int ScreenWidth = 37;
 	static constexpr int ScreenHeight = 12;

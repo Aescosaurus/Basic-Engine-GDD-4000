@@ -10,14 +10,14 @@ Graphics::Graphics()
 	pixels.resize( ( ScreenWidth + 1 ) * ScreenHeight );
 	pixels2.resize( ( ScreenWidth + 1 ) * ScreenHeight );
 
-	BeginFrame();
+	ClearPixels();
 }
 
-void Graphics::BeginFrame()
+void Graphics::ClearPixels()
 {
-	system( "cls" );
+	// system( "cls" );
 
-	pPixelBuffer = FlipBuffer();
+	// pPixelBuffer = FlipBuffer();
 
 	// memset( pixels.data(),' ',pixels.size() );
 	for( int y = 0; y < ScreenHeight; ++y )
@@ -30,9 +30,15 @@ void Graphics::BeginFrame()
 	}
 }
 
+void Graphics::ClearScreen()
+{
+	system( "cls" );
+}
+
 void Graphics::Present()
 {
-	const auto* oldBuffer = FlipBuffer();
+	// const auto* oldBuffer = FlipBuffer();
+	const auto* oldBuffer = pPixelBuffer;
 
 	std::copy( oldBuffer->begin(),oldBuffer->end(),std::ostream_iterator<char>( std::cout,"" ) );
 }
@@ -47,7 +53,12 @@ void Graphics::PutPixel( int x,int y,char c )
 	( *pPixelBuffer )[y * ( ScreenWidth + 1 ) + x] = c;
 }
 
-std::vector<char>* Graphics::FlipBuffer()
+void Graphics::FlipBuffer()
 {
-	return( ( pPixelBuffer == &pixels ) ? &pixels2 : &pixels );
+	pPixelBuffer = &( ( pPixelBuffer == &pixels ) ? pixels2 : pixels );
 }
+
+// std::vector<char>* Graphics::FlipBuffer()
+// {
+// 	return( ( pPixelBuffer == &pixels ) ? &pixels2 : &pixels );
+// }

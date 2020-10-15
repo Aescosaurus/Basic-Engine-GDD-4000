@@ -22,6 +22,7 @@ public:
 		if( callInit ) objs.back()->Init();
 		return( *( objs.back() ) );
 	}
+	// TODO: Object destroy.
 private:
 	void GameUpdate();
 	void GfxDraw();
