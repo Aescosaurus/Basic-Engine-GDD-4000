@@ -124,6 +124,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="AescEngine.h" />
+    <ClInclude Include="Controller.h" />
     <ClInclude Include="FrameTimer.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameWorld.h" />
@@ -138,6 +139,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AescEngine.cpp" />
+    <ClCompile Include="Controller.cpp" />
     <ClCompile Include="GameWorld.cpp" />
     <ClCompile Include="Graphics.cpp" />
     <ClCompile Include="Keyboard.cpp" />
