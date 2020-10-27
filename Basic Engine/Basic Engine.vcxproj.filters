@@ -33,23 +33,8 @@
     <ClInclude Include="Vec2.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="FrameTimer.h">
-      <Filter>Header Files\Framework</Filter>
-    </ClInclude>
-    <ClInclude Include="Keyboard.h">
-      <Filter>Header Files\Framework</Filter>
-    </ClInclude>
     <ClInclude Include="Timer.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="GameObject.h">
-      <Filter>Header Files\Framework</Filter>
-    </ClInclude>
-    <ClInclude Include="AescEngine.h">
-      <Filter>Header Files\Framework</Filter>
-    </ClInclude>
-    <ClInclude Include="Graphics.h">
-      <Filter>Header Files\Framework</Filter>
     </ClInclude>
     <ClInclude Include="Singleton.h">
       <Filter>Header Files\Managers</Filter>
@@ -62,15 +47,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Keyboard.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Graphics.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="AescEngine.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
