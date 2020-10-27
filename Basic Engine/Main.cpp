@@ -1,6 +1,7 @@
 #include <iostream>
 #include "AescEngine.h"
 #include "GameWorld.h"
+#include "../AescEngine/AescEngine.h"
 
 int main()
 {

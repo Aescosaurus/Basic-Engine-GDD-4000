@@ -18,13 +18,13 @@ void GameWorld::Update( const Keyboard& kbd,float dt )
 	}
 
 	// Player move.
-	if( kbd.CheckKey() == 'a' ) playerPos.x -= playerSpeed * dt;
-	if( kbd.CheckKey() == 'd' ) playerPos.x += playerSpeed * dt;
+	if( kbd.ReadBuffer() == 'a' ) playerPos.x -= playerSpeed * dt;
+	if( kbd.ReadBuffer() == 'd' ) playerPos.x += playerSpeed * dt;
 
 	if( playerPos.x < 1.0f ) playerPos.x = 1.0f;
 	if( playerPos.x > float( Graphics::ScreenWidth - 2 ) ) playerPos.x = float( Graphics::ScreenWidth - 2 );
 
-	if( kbd.CheckKey() == ' ' && bullets.size() < 2 )
+	if( kbd.ReadBuffer() == ' ' && bullets.size() < 2 )
 	{
 		bullets.emplace_back( playerPos + Vec2::Up() );
 	}
