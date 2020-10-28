@@ -26,7 +26,13 @@ public:
 		inputThread.join();
 	}
 
-	char ReadBuffer() const
+	void Reset()
+	{
+		key = '\0';
+		while( keyBuffer.size() > 0 ) keyBuffer.pop();
+	}
+
+	char ReadBuffer()
 	{
 		if( keyBuffer.size() < 1 ) return( '\0' );
 
@@ -43,6 +49,6 @@ private:
 	bool stop = false;
 	std::thread inputThread;
 	char key = '\0';
-	mutable std::queue<char> keyBuffer;
+	std::queue<char> keyBuffer;
 	int c = 0;
 };

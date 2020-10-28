@@ -2,9 +2,7 @@
 
 #include "GameObject.h"
 #include "Vec2.h"
-#include <vector>
 #include "Timer.h"
-#include <string>
 
 class GameWorld
 	:
@@ -15,20 +13,17 @@ public:
 	void Update( const Keyboard& kbd,float dt ) override;
 	void Draw( Graphics& gfx ) const override;
 private:
-	bool CheckWallTile( const Vei2& pos ) const;
+	void GameOver();
+
 	void DrawMessage( const std::string& msg,Graphics& gfx ) const;
 private:
-	static constexpr float playerSpeed = 6.0f;
-	static constexpr float bulletSpeed = 6.0f;
-
-	Vec2 playerPos;
-	std::vector<Vec2> bullets;
-	std::vector<Vec2> aliens;
-	Timer alienAnim = 0.5f;
-	char alienFrame = 'M';
-	int alienDir = 1;
-	int alienSpeed = 1;
-	Timer alienMove = 1.0f;
+	std::vector<Vei2> blocks;
+	Vei2 player = { Graphics::ScreenWidth / 2,Graphics::ScreenHeight - 2 };
+	static constexpr int playerSize = 2;
+	Vei2 ball = { Graphics::ScreenWidth / 2 + 1,player.y - 1 };
+	Vei2 ballVel = { 1,-1 };
+	Timer ballMoveTimer = 0.2f;
+	Timer playerMoveTimer = 0.12f;
 	bool gameOver = false;
-	bool gameWin = false;
+	static constexpr int blockCols = 4;
 };

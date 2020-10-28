@@ -2,130 +2,84 @@
 
 void GameWorld::Init()
 {
-	playerPos = Vei2( Vec2{ float( Graphics::ScreenWidth / 2 ),float( Graphics::ScreenHeight - 2 ) } );
-
-	for( int i = 0; i < 8; ++i )
+	for( int y = 2; y < blockCols * 2; y += 2 )
 	{
-		aliens.emplace_back( Vec2::Right() * 4.0f + Vec2::Right() * float( i * 4 ) + Vec2::Down() * 2.0f );
+		for( int x = 2; x < Graphics::ScreenWidth - 3; x += 2 )
+		{
+			blocks.emplace_back( Vei2{ x,y } );
+		}
 	}
 }
 
 void GameWorld::Update( const Keyboard& kbd,float dt )
 {
-	if( gameOver || gameWin )
+	if( gameOver ) return;
+
+	if( playerMoveTimer.Update( dt ) )
 	{
-		return; // Bad!
+		playerMoveTimer.Reset();
+
+		if( ball.x > player.x ) ++player.x;
+		if( ball.x < player.x ) --player.x;
+
+		if( player.x < playerSize + 1 ) player.x = playerSize + 1;
+		if( player.x > Graphics::ScreenWidth - playerSize - 1 ) player.x = Graphics::ScreenWidth - playerSize - 1;
 	}
 
-	// Player move.
-	if( kbd.ReadBuffer() == 'a' ) playerPos.x -= playerSpeed * dt;
-	if( kbd.ReadBuffer() == 'd' ) playerPos.x += playerSpeed * dt;
-
-	if( playerPos.x < 1.0f ) playerPos.x = 1.0f;
-	if( playerPos.x > float( Graphics::ScreenWidth - 2 ) ) playerPos.x = float( Graphics::ScreenWidth - 2 );
-
-	if( kbd.ReadBuffer() == ' ' && bullets.size() < 2 )
+	if( ballMoveTimer.Update( dt ) )
 	{
-		bullets.emplace_back( playerPos + Vec2::Up() );
-	}
+		ballMoveTimer.Reset();
+		ball += ballVel;
 
-	// Bullet update.
-	for( auto it = bullets.begin(); it != bullets.end(); ++it )
-	{
-		auto& b = *it;
-		b.y -= bulletSpeed * dt;
-
-		for( auto a = aliens.begin(); a != aliens.end(); ++a )
+		if( ( ball.y == player.y - 1 || ball.y == player.y ) &&
+			ball.x > player.x - playerSize - 1 &&
+			ball.x < player.x + playerSize + 1 )
 		{
-			if( Vei2( *a ) == Vei2( b ) )
+			ballVel.y = -1;
+			ballVel.x = ballVel.x / abs( ballVel.x ) * 2;
+		}
+
+		for( int i = 0; i < int( blocks.size() ); ++i )
+		{
+			if( ball.x == blocks[i].x && ball.y == blocks[i].y )
 			{
-				a = aliens.erase( a );
-				if( aliens.size() == 0 ) gameWin = true;
-				if( a == aliens.end() ) break;
+				blocks.erase( blocks.begin() + i );
+				ballVel.y *= -1;
 			}
 		}
 
-		// if( world.GetTile( int( b.x ),int( b.y ) ) == '#' )
-		if( CheckWallTile( b ) )
-		{
-			it = bullets.erase( it );
-			if( it == bullets.end() ) break;
-		}
-	}
-
-	// Alien update.
-	if( alienMove.Update( dt ) )
-	{
-		for( auto it = aliens.begin(); it != aliens.end(); ++it )
-		{
-			auto& a = *it;
-
-			a.x += float( alienDir );
-		}
-		alienMove.Reset();
-
-		// Flip dir and drop down.
-		for( auto& a : aliens )
-		{
-			// if( world.GetTile( int( a.x ) + 1,int( a.y ) ) == '#' )
-			if( CheckWallTile( a + Vei2::Right() ) )
-			{
-				alienDir = -1;
-			}
-			// else if( world.GetTile( int( a.x ) - 1,int( a.y ) ) == '#' )
-			else if( CheckWallTile( a + Vei2::Left() ) )
-			{
-				++alienSpeed;
-				alienMove.duration = 1.0f / float( alienSpeed );
-				for( auto& al : aliens )
-				{
-					++al.y;
-					alienDir = 1;
-
-					// Player oof.
-					if( int( al.y ) == int( playerPos.y ) )
-					{
-						gameOver = true;
-						// Draw();
-					}
-				}
-			}
-		}
-	}
-
-	// Alien anim.
-	if( alienAnim.Update( dt ) )
-	{
-		alienAnim.Reset();
-		alienFrame = ( alienFrame == 'M' ) ? 'W' : 'M';
+		if( ball.x <= 2 ) ballVel.x = 1;
+		if( ball.x >= Graphics::ScreenWidth - 2 ) ballVel.x = -1;
+		if( ball.y <= 1 ) ballVel.y = 1;
+		if( ball.y >= Graphics::ScreenHeight - 1 ) GameOver();
 	}
 }
 
 void GameWorld::Draw( Graphics& gfx ) const
 {
-	for( int y = 0; y < Graphics::ScreenHeight; ++y )
+	for( int x = 0; x < Graphics::ScreenWidth; ++x ) gfx.PutPixel( x,0,'#' );
+	for( int x = 0; x < Graphics::ScreenWidth; ++x ) gfx.PutPixel( x,Graphics::ScreenHeight - 1,'#' );
+	for( int y = 0; y < Graphics::ScreenHeight; ++y ) gfx.PutPixel( 0,y,'#' );
+	for( int y = 0; y < Graphics::ScreenHeight; ++y ) gfx.PutPixel( Graphics::ScreenWidth - 1,y,'#' );
+
+	for( int i = player.x - playerSize; i < player.x + playerSize; ++i )
 	{
-		for( int x = 0; x < Graphics::ScreenWidth; ++x )
-		{
-			if( CheckWallTile( Vei2{ x,y } ) )
-			{
-				gfx.PutPixel( x,y,'#' );
-			}
-		}
+		gfx.PutPixel( i,player.y,'-' );
 	}
 
-	gfx.PutPixel( int( playerPos.x ),int( playerPos.y ),'^' );
-	for( const auto& b : bullets ) gfx.PutPixel( int( b.x ),int( b.y ),'*' );
-	for( const auto& a : aliens ) gfx.PutPixel( int( a.x ),int( a.y ),alienFrame );
+	gfx.PutPixel( ball.x,ball.y,'o' );
 
-	if( gameOver ) DrawMessage( "Game Over!",gfx );
-	else if( gameWin ) DrawMessage( "You Win!",gfx );
+	for( const auto& b : blocks )
+	{
+		gfx.PutPixel( b.x,b.y,'#' );
+	}
+
+	if( gameOver ) DrawMessage( "Game Over :(",gfx );
 }
 
-bool GameWorld::CheckWallTile( const Vei2& pos ) const
+void GameWorld::GameOver()
 {
-	return( pos.x == 0 || pos.x == Graphics::ScreenWidth - 1 ||
-		pos.y == 0 || pos.y == Graphics::ScreenHeight - 1 );
+	gameOver = true;
 }
 
 void GameWorld::DrawMessage( const std::string& msg,Graphics& gfx ) const
