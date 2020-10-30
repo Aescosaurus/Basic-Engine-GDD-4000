@@ -136,3 +136,5 @@ private:
 
 // extern "C" AESCENGINE_API void fibonacci_init(
 // 	const unsigned long long a,const unsigned long long b );
+
+extern "C" AESCENGINE_API void oof();

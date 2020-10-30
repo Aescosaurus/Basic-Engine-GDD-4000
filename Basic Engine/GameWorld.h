@@ -23,7 +23,7 @@ private:
 	Vei2 ball = { Graphics::ScreenWidth / 2 + 1,player.y - 1 };
 	Vei2 ballVel = { 1,-1 };
 	Timer ballMoveTimer = 0.2f;
-	Timer playerMoveTimer = 0.12f;
+	Timer playerMoveTimer = 0.08f;
 	bool gameOver = false;
 	static constexpr int blockCols = 4;
 };
